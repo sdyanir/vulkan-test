@@ -25,7 +25,9 @@
 using namespace std;
 
 const string VkResultToString(VkResult result) {
+
 	switch (result) {
+	
 	case VK_SUCCESS: return "VK_SUCCESS";
 	case VK_NOT_READY: return "VK_NOT_READY";
 	case VK_TIMEOUT: return "VK_TIMEOUT";
@@ -222,7 +224,7 @@ private:
 		glfwInit();
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); 
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 		window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
 
 	}
@@ -237,7 +239,7 @@ private:
 		createImageViews();
 		createRenderPass();
 		createGraphicsPipeline();
-		
+
 		uint32_t extensionCount = 0;
 		vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 		vector<VkExtensionProperties> extensions(extensionCount);
@@ -315,10 +317,10 @@ private:
 		VkInstanceCreateInfo createInfo = {};
 		createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 		createInfo.pApplicationInfo = &appInfo;
-		
+
 		createInfo.enabledExtensionCount = static_cast<uint32_t>(glfwExtensions.size());
 		createInfo.ppEnabledExtensionNames = glfwExtensions.data();
-		
+
 		if (enableValidationLayers) {
 			createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 			createInfo.ppEnabledLayerNames = validationLayers.data();
@@ -381,7 +383,7 @@ private:
 		QueueFamilyIndices indices = findQueueFamilies(device);
 
 		bool extensionsSupported = checkDeviceExtensionSupport(device);
-		
+
 		bool swapChainAdequate = false;
 		if (extensionsSupported) {
 			SwapChainSupportDetails swapChainSupport = querySwapChainSupport(device);
@@ -393,7 +395,7 @@ private:
 			deviceFeatures.geometryShader;
 	}
 
-	
+
 	bool checkDeviceExtensionSupport(VkPhysicalDevice device) {
 		uint32_t extensionCount;
 		vkEnumerateDeviceExtensionProperties(device, nullptr, &extensionCount, nullptr);
@@ -424,7 +426,7 @@ private:
 
 	SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device) {
 		SwapChainSupportDetails details;
-		
+
 		//-----------------------------------------------------
 		vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, surface, &details.capabilities);
 
@@ -440,7 +442,7 @@ private:
 			details.formats.resize(formatCount);
 			vkGetPhysicalDeviceSurfaceFormatsKHR(device, surface, &formatCount, details.formats.data());
 		}
- 
+
 		PRINT_ARRAY_FIELDS2(details.formats, format, colorSpace, "formats and color spaces");
 
 		//-----------------------------------------------------
@@ -496,7 +498,7 @@ private:
 
 			actualExtent.width = clamp(actualExtent.width, capabilities.minImageExtent.width, capabilities.maxImageExtent.width);
 			actualExtent.height = clamp(actualExtent.height, capabilities.minImageExtent.height, capabilities.maxImageExtent.height);
-			
+
 			return actualExtent;
 		}
 	}
@@ -559,7 +561,7 @@ private:
 		cout << "actual image count: " << imageCount << endl;
 		swapChainImages.resize(imageCount);
 		vkGetSwapchainImagesKHR(device, swapChain, &imageCount, swapChainImages.data());
-	
+
 		//Save format and extent for later use:
 		swapChainImageFormat = surfaceFormat.format;
 		swapChainExtent = extent;
@@ -635,7 +637,7 @@ private:
 		//-------------------------------------------------
 
 		tryCreate(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device), "logical device");
-		
+
 		vkGetDeviceQueue(device, indices.graphicsFamily, 0, &graphicsQueue);
 		vkGetDeviceQueue(device, indices.presentFamily, 0, &presentQueue);
 	}
@@ -712,7 +714,7 @@ private:
 		scissor.offset = { 0, 0 };
 		scissor.extent = swapChainExtent;
 		//-------------------------------------------------
-		
+
 		//-------------------------------------------------
 		VkPipelineViewportStateCreateInfo viewportState = {};
 		viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
@@ -721,7 +723,7 @@ private:
 		viewportState.scissorCount = 1;
 		viewportState.pScissors = &scissor;
 		//-------------------------------------------------
-		
+
 		//-------------------------------------------------
 		VkPipelineRasterizationStateCreateInfo rasterizer = {};
 		rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -736,8 +738,8 @@ private:
 		rasterizer.depthBiasClamp = 0.0f; // Optional
 		rasterizer.depthBiasSlopeFactor = 0.0f; // Optional
 		//-------------------------------------------------
-		
-		
+
+
 		//-------------------------------------------------
 		VkPipelineMultisampleStateCreateInfo multisampling = {};
 		multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
@@ -748,8 +750,8 @@ private:
 		multisampling.alphaToCoverageEnable = VK_FALSE; // Optional
 		multisampling.alphaToOneEnable = VK_FALSE; // Optional
 		//-------------------------------------------------
-		
-		
+
+
 		//-------------------------------------------------
 		VkPipelineColorBlendAttachmentState colorBlendAttachment = {};
 		colorBlendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
@@ -931,8 +933,8 @@ private:
 			i++;
 		}
 
-		cout << "selected graphics queue family: " << indices.graphicsFamily+1 << endl;
-		cout << "selected present  queue family: " << indices.presentFamily+1 << endl;
+		cout << "selected graphics queue family: " << indices.graphicsFamily + 1 << endl;
+		cout << "selected present  queue family: " << indices.presentFamily + 1 << endl;
 
 		return indices;
 	}
